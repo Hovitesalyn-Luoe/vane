@@ -51,7 +51,7 @@ import WebKit
                   _ mods: NSEvent.ModifierFlags = .command,
                   _ run: @escaping () -> Void) -> NSMenuItem {
     let act = Act(run)
-    let i = NSMenuItem(title: title, action: #selector(Act.fire), keyEquivalent: key)
+    let i = NSMenuItem(title: Bundle.module.localizedString(forKey: title, value: title, table: nil), action: #selector(Act.fire), keyEquivalent: key)
     i.target = act
     i.representedObject = act
     i.keyEquivalentModifierMask = mods
@@ -64,7 +64,7 @@ import WebKit
     Keybindings.actions[command] = run
     let act = Act(run)
     let binding = Keybindings.binding(for: command)
-    let entry = NSMenuItem(title: command.title, action: #selector(Act.fire),
+    let entry = NSMenuItem(title: Bundle.module.localizedString(forKey: command.title, value: command.title, table: nil), action: #selector(Act.fire),
                            keyEquivalent: binding.menuKeyEquivalent)
     entry.target = act
     entry.representedObject = act
@@ -110,9 +110,9 @@ private extension NSMenuItem {
 }
 
 private func menu(_ title: String, _ items: [NSMenuItem]) -> NSMenuItem {
-    let m = ShortcutMenu(title: title)
+    let m = ShortcutMenu(title: Bundle.module.localizedString(forKey: title, value: title, table: nil))
     items.forEach(m.addItem)
-    let holder = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+    let holder = NSMenuItem(title: Bundle.module.localizedString(forKey: title, value: title, table: nil), action: nil, keyEquivalent: "")
     holder.submenu = m
     return holder
 }
@@ -125,7 +125,7 @@ private func menu(_ title: String, _ items: [NSMenuItem]) -> NSMenuItem {
 /// Keyless by construction. Everything with a chord goes through `Standard.item`, so the
 /// shortcuts a Mac app must honour are written down in exactly one place — see Standard.swift.
 private func standard(_ title: String, _ action: Selector) -> NSMenuItem {
-    NSMenuItem(title: title, action: action, keyEquivalent: "")
+    NSMenuItem(title: Bundle.module.localizedString(forKey: title, value: title, table: nil), action: action, keyEquivalent: "")
 }
 
 /// The window ⌘M would put in the Dock right now, or nil when there is none. The key window
@@ -182,7 +182,7 @@ private func standard(_ title: String, _ action: Selector) -> NSMenuItem {
 @MainActor private func finderItem(_ command: Command, _ action: NSTextFinder.Action) -> NSMenuItem {
     let selector = #selector(NSResponder.performTextFinderAction(_:))
     let binding = Keybindings.binding(for: command)
-    let entry = NSMenuItem(title: command.title, action: selector,
+    let entry = NSMenuItem(title: Bundle.module.localizedString(forKey: command.title, value: command.title, table: nil), action: selector,
                            keyEquivalent: binding.menuKeyEquivalent)
     entry.keyEquivalentModifierMask = binding.menuModifierMask
     entry.tag = action.rawValue
@@ -211,13 +211,13 @@ private func standard(_ title: String, _ action: Selector) -> NSMenuItem {
         }
     }
 
-    let agents = NSMenu(title: "User Agent")
+    let agents = NSMenu(title: Bundle.module.localizedString(forKey: "User Agent", value: "User Agent", table: nil))
     for ua in Settings.userAgents {
         let entry = item(ua.name, "") { Settings.userAgent = ua.value; rebuild() }
         entry.state = Settings.userAgent == ua.value ? .on : .off
         agents.addItem(entry)
     }
-    let agentHolder = NSMenuItem(title: "User Agent", action: nil, keyEquivalent: "")
+    let agentHolder = NSMenuItem(title: Bundle.module.localizedString(forKey: "User Agent", value: "User Agent", table: nil), action: nil, keyEquivalent: "")
     agentHolder.submenu = agents
 
     let allow = item(.allowWebInspector) {
@@ -682,14 +682,15 @@ private func standard(_ title: String, _ action: Selector) -> NSMenuItem {
 
 @MainActor func buildMenu() -> NSMenu {
     let root = ShortcutMenu()
+
     let bookmarkProfileID = BookmarkManager.currentActionProfile
     let makeDefaultApp = item(.makeDefaultBrowser) { URLHandling.makeDefaultBrowser() }
     makeDefaultApp.isEnabled = !URLHandling.isDefaultBrowser
     // macOS fills this in itself once it is `NSApp.servicesMenu`: what the Services submenu
     // offers depends on what is selected and on what the user has enabled in Settings, and
     // an app that never sets it is the one with a Services menu that is always empty.
-    let services = NSMenu(title: "Services")
-    let servicesHolder = NSMenuItem(title: "Services", action: nil, keyEquivalent: "")
+    let services = NSMenu(title: Bundle.module.localizedString(forKey: "Services", value: "Services", table: nil))
+    let servicesHolder = NSMenuItem(title: Bundle.module.localizedString(forKey: "Services", value: "Services", table: nil), action: nil, keyEquivalent: "")
     servicesHolder.submenu = services
     root.addItem(menu("Vane", [
         Standard.item("About Vane"),
