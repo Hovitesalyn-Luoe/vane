@@ -156,7 +156,7 @@ enum Standard {
     /// a wrong one — `installed` then reports the row as missing, which is the point.
     @MainActor static func item(_ title: String) -> NSMenuItem {
         guard let row = row(title), let name = row.selectorName else {
-            return NSMenuItem(title: title, action: nil, keyEquivalent: "")
+            return NSMenuItem(title: Bundle.module.localizedString(forKey: title, value: title, table: nil), action: nil, keyEquivalent: "")
         }
         let entry = NSMenuItem(title: row.title, action: NSSelectorFromString(name),
                                keyEquivalent: row.key.menuKeyEquivalent)

@@ -157,7 +157,7 @@ enum LinkTarget {
 
     /// The title bar names the pane you are looking at, the way Arc's and System Settings'
     /// do — the tab bar is icons, so the title is where the full word lives.
-    static func retitle(_ title: String) { window?.title = title }
+    static func retitle(_ title: String) { window?.title = Bundle.module.localizedString(forKey: title, value: title, table: nil) }
 
     /// Whether a key event landed in this window. `ShortcutsPane`'s recorder asks: its event
     /// monitor is app-wide, so a keystroke anywhere else is not the shortcut being typed —
@@ -248,10 +248,10 @@ enum LinkTarget {
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         guard let tab = SettingsTab.all.first(where: { $0.id == id.rawValue }) else { return nil }
         let item = NSToolbarItem(itemIdentifier: id)
-        item.label = tab.title
-        item.paletteLabel = tab.title
-        item.toolTip = tab.title
-        item.image = NSImage(systemSymbolName: tab.icon, accessibilityDescription: tab.title)
+        item.label = Bundle.module.localizedString(forKey: tab.title, value: tab.title, table: nil)
+        item.paletteLabel = Bundle.module.localizedString(forKey: tab.title, value: tab.title, table: nil)
+        item.toolTip = Bundle.module.localizedString(forKey: tab.title, value: tab.title, table: nil)
+        item.image = NSImage(systemSymbolName: tab.icon, accessibilityDescription: Bundle.module.localizedString(forKey: tab.title, value: tab.title, table: nil))
         item.target = self
         item.action = #selector(pick(_:))
         return item
@@ -369,7 +369,7 @@ struct SettingsRow<Trailing: View>: View {
     @ViewBuilder var trailing: Trailing
 
     init(_ title: String, @ViewBuilder trailing: () -> Trailing) {
-        self.title = title
+        self.title = Bundle.module.localizedString(forKey: title, value: title, table: nil)
         self.trailing = trailing()
     }
 
@@ -410,7 +410,7 @@ struct SettingsSection<Content: View>: View {
     @ViewBuilder var content: Content
 
     init(_ title: String, @ViewBuilder content: () -> Content) {
-        self.title = title
+        self.title = Bundle.module.localizedString(forKey: title, value: title, table: nil)
         self.content = content()
     }
 
@@ -507,7 +507,7 @@ private struct PreviewsPane: View {
                 SettingsRow("Library hover preview") {
                     Picker("Library hover preview", selection: $libraryPreview) {
                         ForEach(LibraryHoverCategory.allCases) { category in
-                            Text(category.title).tag(category.rawValue)
+                            Text(Bundle.module.localizedString(forKey: category.title, value: category.title, table: nil)).tag(category.rawValue)
                         }
                     }.labelsHidden().frame(width: 160)
                 }
@@ -884,7 +884,7 @@ private struct DataRow: View {
                     .foregroundStyle(.white)
                     .frame(width: Look.iconTile, height: Look.iconTile)
                     .background(tint, in: .rect(cornerRadius: Look.iconTileRadius))
-                Text(title).font(Look.text).foregroundStyle(Look.inkPrimary)
+                Text(Bundle.module.localizedString(forKey: title, value: title, table: nil)).font(Look.text).foregroundStyle(Look.inkPrimary)
                 Spacer(minLength: Look.inset)
                 Image(systemName: "arrow.right").foregroundStyle(Color.accentColor)
             }

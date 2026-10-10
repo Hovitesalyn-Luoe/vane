@@ -84,7 +84,7 @@ import SwiftUI
                                 }
                             } header: {
                                 if !title.isEmpty {
-                                    Text(title)
+                                    Text(Bundle.module.localizedString(forKey: title, value: title, table: nil))
                                         .font(Look.heading)
                                         .foregroundStyle(.secondary)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -227,7 +227,7 @@ import SwiftUI
         let priority = Keybindings.priority(for: command)
         return VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: Look.inset) {
-                Text(command.title)
+                Text(Bundle.module.localizedString(forKey: command.title, value: command.title, table: nil))
                     .font(Look.rowTitle)
                     .foregroundStyle(Look.inkPrimary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -267,7 +267,7 @@ import SwiftUI
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(command.title)
+        .accessibilityLabel(Bundle.module.localizedString(forKey: command.title, value: command.title, table: nil))
         .accessibilityValue(live ? "recording a shortcut"
                             : binding.isAssigned ? "shortcut \(binding.display)" : "no shortcut")
         .accessibilityHint(note?.text ?? "Activate to change this shortcut.")
