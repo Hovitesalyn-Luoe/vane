@@ -34,7 +34,7 @@ import SwiftUI
     /// saved windows without asking, keeping their pages paused; "fresh" opens
     /// one empty window; "ask" is the old alert, for whoever wants to be asked.
     static let afterCrashChoices: [(name: String, key: String)] = [
-        ("Continue where I left off", "continue"), ("Start fresh", "fresh"), ("Ask me", "ask"),
+        (Bundle.module.localizedString(forKey: "Continue where I left off", value: "Continue where I left off", table: nil), "continue"), (Bundle.module.localizedString(forKey: "Start fresh", value: "Start fresh", table: nil), "fresh"), (Bundle.module.localizedString(forKey: "Ask me", value: "Ask me", table: nil), "ask"),
     ]
     static var afterCrash: String {
         get { UserDefaults.vane.string(forKey: "afterCrash") ?? "continue" }
@@ -392,7 +392,7 @@ struct SettingsRow<Trailing: View>: View {
 /// stroke, the way Arc keeps an explanation with the thing it explains.
 struct Footnote: View {
     let text: String
-    init(_ text: String) { self.text = text }
+    init(_ text: String) { self.text = Bundle.module.localizedString(forKey: text, value: text, table: nil) }
     var body: some View {
         // Arc's footnotes are a size down and a quiet grey (115 on 30).
         Text(text).font(Look.footnote).foregroundStyle(Look.inkQuiet)
@@ -1222,7 +1222,7 @@ private struct AdvancedPane: View {
                         .labelsHidden().fixedSize()
                     }
                     SettingsRow("Status") {
-                        Label(batterySaver.isActive ? "Active" : "Inactive",
+                        Label(batterySaver.isActive ? Bundle.module.localizedString(forKey: "Active", value: "Active", table: nil) : Bundle.module.localizedString(forKey: "Inactive", value: "Inactive", table: nil),
                               systemImage: batterySaver.isActive ? "bolt.fill" : "bolt")
                             .foregroundStyle(batterySaver.isActive ? Color.green : Color.secondary)
                     }

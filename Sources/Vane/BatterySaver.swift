@@ -12,11 +12,12 @@ import IOKit.ps
     enum Mode: String, CaseIterable {
         case off, automatic, alwaysOn
         var title: String {
-            switch self {
+            let raw: String = switch self {
             case .off: "Off"
             case .automatic: "Automatic"
             case .alwaysOn: "Always On"
             }
+            return Bundle.module.localizedString(forKey: raw, value: raw, table: nil)
         }
     }
 
