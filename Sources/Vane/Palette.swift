@@ -350,7 +350,7 @@ enum PaletteMode {
         }
     }
     /// One prompt for every entry point: whatever opened this, it searches or navigates.
-    var prompt: String { "Search or Enter URL…" }
+    var prompt: String { String(localized: "Search or Enter URL…") }
 }
 
 
@@ -1203,7 +1203,7 @@ struct CommandField: NSViewRepresentable {
     /// rather than handing the window's page over to it.
     private func reportRow() -> PaletteRow {
         let issues = "https://github.com/notnaki/vane/issues/new"
-        return PaletteRow(id: "report", icon: "bubble.left", title: "Report a Problem",
+        return PaletteRow(id: "report", icon: "bubble.left", title: String(localized: "Report a Problem"),
                           detail: issues, chip: true, kind: "Feedback") { [weak store] _ in
             guard let url = URL(string: issues) else { return }
             // This bar's own window, not whichever one is key: the palette can be up in a

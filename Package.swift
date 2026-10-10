@@ -3,12 +3,13 @@ import PackageDescription
 
 let package = Package(
     name: "Vane",
+    defaultLocalization: "en",
     platforms: [.macOS("26.0")],
     targets: [
         .executableTarget(
             name: "vane",
             path: "Sources/Vane",
-            resources: [.copy("EaselFonts"), .copy("WelcomeAssets")],
+            resources: [.copy("EaselFonts"), .copy("WelcomeAssets"), .process("Resources")],
             linkerSettings: [
                 .linkedFramework("AppKit"),
                 .linkedFramework("WebKit"),
