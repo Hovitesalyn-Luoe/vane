@@ -3643,7 +3643,7 @@ private struct NewTabRow: View {
     @State private var lit: Landing.Band?
 
     var body: some View {
-        SidebarRow(icon: "plus", title: "New Tab", selected: false, dimmed: true) { store.newTab(nil) }
+        SidebarRow(icon: "plus", title: Bundle.module.localizedString(forKey: "New Tab", value: "New Tab", table: nil), selected: false, dimmed: true) { store.newTab(nil) }
             // This row heads Today: tabs land directly under it, outside every folder,
             // including tabs already in Today. The line marks that gap at the bottom.
             .overlay(alignment: .bottom) { DropLine(on: lit != nil, axis: .vertical, target: "today-head") }
@@ -3651,9 +3651,9 @@ private struct NewTabRow: View {
                     delegate: TabDrop(store: store, target: nil, into: .today,
                                       axis: .horizontal, extent: 0, marker: dropMarker,
                                       markerTarget: "today-head", side: $lit))
-            .vaneTooltip("New Tab", shortcut: Keybindings.binding(for: .newTab).display)
+            .vaneTooltip(Bundle.module.localizedString(forKey: "New Tab", value: "New Tab", table: nil), shortcut: Keybindings.binding(for: .newTab).display)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("New Tab")
+            .accessibilityLabel(Bundle.module.localizedString(forKey: "New Tab", value: "New Tab", table: nil))
             .accessibilityAddTraits(.isButton)
             .accessibilityAction { store.newTab(nil) }
     }

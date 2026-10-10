@@ -201,7 +201,13 @@ enum Command: String, CaseIterable, Codable, Sendable {
         case window = "Window", help = "Help"
     }
 
+    /// Localized command title (table lives in Resources/zh-Hans.lproj).
     var title: String {
+        let raw = rawTitle
+        return Bundle.module.localizedString(forKey: raw, value: raw, table: nil)
+    }
+
+    private var rawTitle: String {
         switch self {
         case .newEasel: "New Easel"
         case .captureToEasel: "Capture Page to Easel"

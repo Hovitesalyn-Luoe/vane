@@ -278,7 +278,7 @@ private struct ChromeMenuSurface: View {
                 Image(systemName: item.symbol).font(.system(size: 19, weight: .medium))
                     .frame(width: 24).accessibilityHidden(true)
                     .scaleEffect(selection.index == index && !reduced ? 1.08 : 1)
-                Text(item.title).font(.system(size: 14, weight: .semibold))
+                Text(Bundle.module.localizedString(forKey: item.title, value: item.title, table: nil)).font(.system(size: 14, weight: .semibold))
                     .lineLimit(1).truncationMode(.tail)
                 Spacer(minLength: 8)
                 if item.checked {
@@ -303,7 +303,7 @@ private struct ChromeMenuSurface: View {
             if over { selection.index = index }
             else if selection.index == index { selection.index = nil }
         }
-        .accessibilityLabel(item.title)
+        .accessibilityLabel(Bundle.module.localizedString(forKey: item.title, value: item.title, table: nil))
         .accessibilityValue(item.checked ? "Selected" : "")
         .accessibilityAddTraits(item.checked ? [.isSelected] : [])
     }

@@ -612,7 +612,7 @@ struct SpacePreviewList: View, Equatable {
     }
 
     private var newTab: some View {
-        SidebarRow(icon: "plus", title: "New Tab", selected: false, dimmed: true, action: {})
+        SidebarRow(icon: "plus", title: Bundle.module.localizedString(forKey: "New Tab", value: "New Tab", table: nil), selected: false, dimmed: true, action: {})
     }
 
     @ViewBuilder private func row(_ row: Row, selected: Bool) -> some View {
