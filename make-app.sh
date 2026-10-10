@@ -54,6 +54,22 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Vane"
 cp -R ".build/$CONF/Vane_vane.bundle" "$APP/Contents/Resources/"
+
+# Simplified Chinese: SwiftPM's resource bundle needs its own language declaration,
+# otherwise Bundle.module resolves to the development language only and every lookup
+# falls back to the English source string.
+RES_BUNDLE="$APP/Contents/Resources/Vane_vane.bundle"
+/usr/libexec/PlistBuddy -c "Delete :CFBundleLocalizations" "$RES_BUNDLE/Contents/Info.plist" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" "$RES_BUNDLE/Contents/Info.plist" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations:0 string en" "$RES_BUNDLE/Contents/Info.plist" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations:1 string zh-Hans" "$RES_BUNDLE/Contents/Info.plist" >/dev/null 2>&1 || true
+# Bundle.module looks for the resource bundle beside the executable (see
+# resource_bundle_accessor.swift), so link it where it expects to find it.
+ln -sfn Contents/Resources/Vane_vane.bundle "$APP/Vane_vane.bundle"
+# The same tables at app level, so Bundle.main lookups (AppKit's own menus) resolve too.
+for L in "$RES_BUNDLE"/Contents/Resources/*.lproj; do
+  [ -d "$L" ] && cp -R "$L" "$APP/Contents/Resources/"
+done
 INSTALLER="$APP/Contents/XPCServices/io.github.notnaki.vane.UpdateInstaller.xpc"
 mkdir -p "$INSTALLER/Contents/MacOS"
 cp installer/UpdateInstaller-Info.plist "$INSTALLER/Contents/Info.plist"
